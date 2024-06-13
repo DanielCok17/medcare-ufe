@@ -10,7 +10,15 @@ describe('medcare-remove-allergy-records', () => {
     expect(page.root).toEqualHtml(`
       <medcare-remove-allergy-records>
         <mock:shadow-root>
-          <slot></slot>
+          <form>
+            <label>
+              Allergy Record ID:
+              <input name="allergyId" type="text" value="">
+            </label>
+            <button type="submit">
+              Remove
+            </button>
+          </form>
         </mock:shadow-root>
       </medcare-remove-allergy-records>
     `);
