@@ -6,6 +6,14 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface MedcareMedicalRecords {
+    }
+    interface MedcareRemoveAllergyRecords {
+    }
+    interface MedcareUpdateLabResults {
+    }
+    interface MedcareVaccinationRecord {
+    }
     interface MyComponent {
         /**
           * The first name
@@ -22,6 +30,30 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLMedcareMedicalRecordsElement extends Components.MedcareMedicalRecords, HTMLStencilElement {
+    }
+    var HTMLMedcareMedicalRecordsElement: {
+        prototype: HTMLMedcareMedicalRecordsElement;
+        new (): HTMLMedcareMedicalRecordsElement;
+    };
+    interface HTMLMedcareRemoveAllergyRecordsElement extends Components.MedcareRemoveAllergyRecords, HTMLStencilElement {
+    }
+    var HTMLMedcareRemoveAllergyRecordsElement: {
+        prototype: HTMLMedcareRemoveAllergyRecordsElement;
+        new (): HTMLMedcareRemoveAllergyRecordsElement;
+    };
+    interface HTMLMedcareUpdateLabResultsElement extends Components.MedcareUpdateLabResults, HTMLStencilElement {
+    }
+    var HTMLMedcareUpdateLabResultsElement: {
+        prototype: HTMLMedcareUpdateLabResultsElement;
+        new (): HTMLMedcareUpdateLabResultsElement;
+    };
+    interface HTMLMedcareVaccinationRecordElement extends Components.MedcareVaccinationRecord, HTMLStencilElement {
+    }
+    var HTMLMedcareVaccinationRecordElement: {
+        prototype: HTMLMedcareVaccinationRecordElement;
+        new (): HTMLMedcareVaccinationRecordElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -29,10 +61,22 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "medcare-medical-records": HTMLMedcareMedicalRecordsElement;
+        "medcare-remove-allergy-records": HTMLMedcareRemoveAllergyRecordsElement;
+        "medcare-update-lab-results": HTMLMedcareUpdateLabResultsElement;
+        "medcare-vaccination-record": HTMLMedcareVaccinationRecordElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface MedcareMedicalRecords {
+    }
+    interface MedcareRemoveAllergyRecords {
+    }
+    interface MedcareUpdateLabResults {
+    }
+    interface MedcareVaccinationRecord {
+    }
     interface MyComponent {
         /**
           * The first name
@@ -48,6 +92,10 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface IntrinsicElements {
+        "medcare-medical-records": MedcareMedicalRecords;
+        "medcare-remove-allergy-records": MedcareRemoveAllergyRecords;
+        "medcare-update-lab-results": MedcareUpdateLabResults;
+        "medcare-vaccination-record": MedcareVaccinationRecord;
         "my-component": MyComponent;
     }
 }
@@ -55,6 +103,10 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "medcare-medical-records": LocalJSX.MedcareMedicalRecords & JSXBase.HTMLAttributes<HTMLMedcareMedicalRecordsElement>;
+            "medcare-remove-allergy-records": LocalJSX.MedcareRemoveAllergyRecords & JSXBase.HTMLAttributes<HTMLMedcareRemoveAllergyRecordsElement>;
+            "medcare-update-lab-results": LocalJSX.MedcareUpdateLabResults & JSXBase.HTMLAttributes<HTMLMedcareUpdateLabResultsElement>;
+            "medcare-vaccination-record": LocalJSX.MedcareVaccinationRecord & JSXBase.HTMLAttributes<HTMLMedcareVaccinationRecordElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
