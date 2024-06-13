@@ -189,6 +189,36 @@ export const AllergyRecordsApiAxiosParamCreator = function (configuration?: Conf
             };
         },
         /**
+         * Retrieve all allergy records
+         * @summary Get all allergy records
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllAllergyRecords: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/allergy-records`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieve a specific allergy record by its ID
          * @summary Get an allergy record by ID
          * @param {string} recordId 
@@ -244,6 +274,16 @@ export const AllergyRecordsApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Retrieve all allergy records
+         * @summary Get all allergy records
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllAllergyRecords(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<AllergyRecord>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllAllergyRecords(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Retrieve a specific allergy record by its ID
          * @summary Get an allergy record by ID
          * @param {string} recordId 
@@ -275,6 +315,15 @@ export const AllergyRecordsApiFactory = function (configuration?: Configuration,
             return localVarFp.deleteAllergyRecord(recordId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Retrieve all allergy records
+         * @summary Get all allergy records
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllAllergyRecords(options?: any): AxiosPromise<Array<AllergyRecord>> {
+            return localVarFp.getAllAllergyRecords(options).then((request) => request(axios, basePath));
+        },
+        /**
          * Retrieve a specific allergy record by its ID
          * @summary Get an allergy record by ID
          * @param {string} recordId 
@@ -302,6 +351,15 @@ export interface AllergyRecordsApiInterface {
      * @memberof AllergyRecordsApiInterface
      */
     deleteAllergyRecord(recordId: string, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * Retrieve all allergy records
+     * @summary Get all allergy records
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AllergyRecordsApiInterface
+     */
+    getAllAllergyRecords(options?: AxiosRequestConfig): AxiosPromise<Array<AllergyRecord>>;
 
     /**
      * Retrieve a specific allergy record by its ID
@@ -335,6 +393,17 @@ export class AllergyRecordsApi extends BaseAPI implements AllergyRecordsApiInter
     }
 
     /**
+     * Retrieve all allergy records
+     * @summary Get all allergy records
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AllergyRecordsApi
+     */
+    public getAllAllergyRecords(options?: AxiosRequestConfig) {
+        return AllergyRecordsApiFp(this.configuration).getAllAllergyRecords(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * Retrieve a specific allergy record by its ID
      * @summary Get an allergy record by ID
      * @param {string} recordId 
@@ -355,20 +424,13 @@ export class AllergyRecordsApi extends BaseAPI implements AllergyRecordsApiInter
 export const LabResultsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Add a new lab result
-         * @summary Create a new lab result
-         * @param {string} resultId 
-         * @param {LabResult} labResult 
+         * Retrieve all lab results
+         * @summary Get all lab results
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createLabResult: async (resultId: string, labResult: LabResult, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'resultId' is not null or undefined
-            assertParamExists('createLabResult', 'resultId', resultId)
-            // verify required parameter 'labResult' is not null or undefined
-            assertParamExists('createLabResult', 'labResult', labResult)
-            const localVarPath = `/lab-results/{resultId}`
-                .replace(`{${"resultId"}}`, encodeURIComponent(String(resultId)));
+        getAllLabResults: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/lab-results`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -376,18 +438,15 @@ export const LabResultsApiAxiosParamCreator = function (configuration?: Configur
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(labResult, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -395,15 +454,15 @@ export const LabResultsApiAxiosParamCreator = function (configuration?: Configur
             };
         },
         /**
-         * Retrieve specific lab results by their ID
-         * @summary Get lab results by ID
+         * Retrieve a specific lab result by its ID
+         * @summary Get lab result by ID
          * @param {string} resultId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLabResultsById: async (resultId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getLabResultById: async (resultId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'resultId' is not null or undefined
-            assertParamExists('getLabResultsById', 'resultId', resultId)
+            assertParamExists('getLabResultById', 'resultId', resultId)
             const localVarPath = `/lab-results/{resultId}`
                 .replace(`{${"resultId"}}`, encodeURIComponent(String(resultId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -428,6 +487,46 @@ export const LabResultsApiAxiosParamCreator = function (configuration?: Configur
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Update a specific lab result by its ID
+         * @summary Update a lab result
+         * @param {string} resultId 
+         * @param {LabResult} labResult 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateLabResult: async (resultId: string, labResult: LabResult, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'resultId' is not null or undefined
+            assertParamExists('updateLabResult', 'resultId', resultId)
+            // verify required parameter 'labResult' is not null or undefined
+            assertParamExists('updateLabResult', 'labResult', labResult)
+            const localVarPath = `/lab-results/{resultId}`
+                .replace(`{${"resultId"}}`, encodeURIComponent(String(resultId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(labResult, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -439,26 +538,36 @@ export const LabResultsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = LabResultsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Add a new lab result
-         * @summary Create a new lab result
+         * Retrieve all lab results
+         * @summary Get all lab results
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllLabResults(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LabResult>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllLabResults(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Retrieve a specific lab result by its ID
+         * @summary Get lab result by ID
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getLabResultById(resultId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LabResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getLabResultById(resultId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Update a specific lab result by its ID
+         * @summary Update a lab result
          * @param {string} resultId 
          * @param {LabResult} labResult 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createLabResult(resultId, labResult, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Retrieve specific lab results by their ID
-         * @summary Get lab results by ID
-         * @param {string} resultId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getLabResultsById(resultId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LabResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getLabResultsById(resultId, options);
+        async updateLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateLabResult(resultId, labResult, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -472,25 +581,34 @@ export const LabResultsApiFactory = function (configuration?: Configuration, bas
     const localVarFp = LabResultsApiFp(configuration)
     return {
         /**
-         * Add a new lab result
-         * @summary Create a new lab result
+         * Retrieve all lab results
+         * @summary Get all lab results
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllLabResults(options?: any): AxiosPromise<Array<LabResult>> {
+            return localVarFp.getAllLabResults(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieve a specific lab result by its ID
+         * @summary Get lab result by ID
+         * @param {string} resultId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLabResultById(resultId: string, options?: any): AxiosPromise<LabResult> {
+            return localVarFp.getLabResultById(resultId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Update a specific lab result by its ID
+         * @summary Update a lab result
          * @param {string} resultId 
          * @param {LabResult} labResult 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createLabResult(resultId: string, labResult: LabResult, options?: any): AxiosPromise<void> {
-            return localVarFp.createLabResult(resultId, labResult, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve specific lab results by their ID
-         * @summary Get lab results by ID
-         * @param {string} resultId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getLabResultsById(resultId: string, options?: any): AxiosPromise<LabResult> {
-            return localVarFp.getLabResultsById(resultId, options).then((request) => request(axios, basePath));
+        updateLabResult(resultId: string, labResult: LabResult, options?: any): AxiosPromise<void> {
+            return localVarFp.updateLabResult(resultId, labResult, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -502,25 +620,34 @@ export const LabResultsApiFactory = function (configuration?: Configuration, bas
  */
 export interface LabResultsApiInterface {
     /**
-     * Add a new lab result
-     * @summary Create a new lab result
+     * Retrieve all lab results
+     * @summary Get all lab results
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LabResultsApiInterface
+     */
+    getAllLabResults(options?: AxiosRequestConfig): AxiosPromise<Array<LabResult>>;
+
+    /**
+     * Retrieve a specific lab result by its ID
+     * @summary Get lab result by ID
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LabResultsApiInterface
+     */
+    getLabResultById(resultId: string, options?: AxiosRequestConfig): AxiosPromise<LabResult>;
+
+    /**
+     * Update a specific lab result by its ID
+     * @summary Update a lab result
      * @param {string} resultId 
      * @param {LabResult} labResult 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LabResultsApiInterface
      */
-    createLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig): AxiosPromise<void>;
-
-    /**
-     * Retrieve specific lab results by their ID
-     * @summary Get lab results by ID
-     * @param {string} resultId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LabResultsApiInterface
-     */
-    getLabResultsById(resultId: string, options?: AxiosRequestConfig): AxiosPromise<LabResult>;
+    updateLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig): AxiosPromise<void>;
 
 }
 
@@ -532,28 +659,39 @@ export interface LabResultsApiInterface {
  */
 export class LabResultsApi extends BaseAPI implements LabResultsApiInterface {
     /**
-     * Add a new lab result
-     * @summary Create a new lab result
+     * Retrieve all lab results
+     * @summary Get all lab results
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LabResultsApi
+     */
+    public getAllLabResults(options?: AxiosRequestConfig) {
+        return LabResultsApiFp(this.configuration).getAllLabResults(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieve a specific lab result by its ID
+     * @summary Get lab result by ID
+     * @param {string} resultId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LabResultsApi
+     */
+    public getLabResultById(resultId: string, options?: AxiosRequestConfig) {
+        return LabResultsApiFp(this.configuration).getLabResultById(resultId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Update a specific lab result by its ID
+     * @summary Update a lab result
      * @param {string} resultId 
      * @param {LabResult} labResult 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LabResultsApi
      */
-    public createLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig) {
-        return LabResultsApiFp(this.configuration).createLabResult(resultId, labResult, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve specific lab results by their ID
-     * @summary Get lab results by ID
-     * @param {string} resultId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LabResultsApi
-     */
-    public getLabResultsById(resultId: string, options?: AxiosRequestConfig) {
-        return LabResultsApiFp(this.configuration).getLabResultsById(resultId, options).then((request) => request(this.axios, this.basePath));
+    public updateLabResult(resultId: string, labResult: LabResult, options?: AxiosRequestConfig) {
+        return LabResultsApiFp(this.configuration).updateLabResult(resultId, labResult, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -565,57 +703,13 @@ export class LabResultsApi extends BaseAPI implements LabResultsApiInterface {
 export const MedicalRecordsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Add a new medical record
-         * @summary Create a new medical record
-         * @param {string} recordId 
-         * @param {MedicalRecord} medicalRecord 
+         * Retrieve all medical records
+         * @summary Get all medical records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMedicalRecord: async (recordId: string, medicalRecord: MedicalRecord, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'recordId' is not null or undefined
-            assertParamExists('createMedicalRecord', 'recordId', recordId)
-            // verify required parameter 'medicalRecord' is not null or undefined
-            assertParamExists('createMedicalRecord', 'medicalRecord', medicalRecord)
-            const localVarPath = `/medical-records/{recordId}`
-                .replace(`{${"recordId"}}`, encodeURIComponent(String(recordId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(medicalRecord, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * Retrieve a specific medical record by its ID
-         * @summary Get a medical record by ID
-         * @param {string} recordId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getMedicalRecordById: async (recordId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'recordId' is not null or undefined
-            assertParamExists('getMedicalRecordById', 'recordId', recordId)
-            const localVarPath = `/medical-records/{recordId}`
-                .replace(`{${"recordId"}}`, encodeURIComponent(String(recordId)));
+        getAllMedicalRecords: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/medical-records`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -649,26 +743,13 @@ export const MedicalRecordsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = MedicalRecordsApiAxiosParamCreator(configuration)
     return {
         /**
-         * Add a new medical record
-         * @summary Create a new medical record
-         * @param {string} recordId 
-         * @param {MedicalRecord} medicalRecord 
+         * Retrieve all medical records
+         * @summary Get all medical records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createMedicalRecord(recordId: string, medicalRecord: MedicalRecord, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createMedicalRecord(recordId, medicalRecord, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * Retrieve a specific medical record by its ID
-         * @summary Get a medical record by ID
-         * @param {string} recordId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getMedicalRecordById(recordId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MedicalRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMedicalRecordById(recordId, options);
+        async getAllMedicalRecords(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MedicalRecord>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMedicalRecords(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -682,25 +763,13 @@ export const MedicalRecordsApiFactory = function (configuration?: Configuration,
     const localVarFp = MedicalRecordsApiFp(configuration)
     return {
         /**
-         * Add a new medical record
-         * @summary Create a new medical record
-         * @param {string} recordId 
-         * @param {MedicalRecord} medicalRecord 
+         * Retrieve all medical records
+         * @summary Get all medical records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createMedicalRecord(recordId: string, medicalRecord: MedicalRecord, options?: any): AxiosPromise<void> {
-            return localVarFp.createMedicalRecord(recordId, medicalRecord, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve a specific medical record by its ID
-         * @summary Get a medical record by ID
-         * @param {string} recordId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getMedicalRecordById(recordId: string, options?: any): AxiosPromise<MedicalRecord> {
-            return localVarFp.getMedicalRecordById(recordId, options).then((request) => request(axios, basePath));
+        getAllMedicalRecords(options?: any): AxiosPromise<Array<MedicalRecord>> {
+            return localVarFp.getAllMedicalRecords(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -712,25 +781,13 @@ export const MedicalRecordsApiFactory = function (configuration?: Configuration,
  */
 export interface MedicalRecordsApiInterface {
     /**
-     * Add a new medical record
-     * @summary Create a new medical record
-     * @param {string} recordId 
-     * @param {MedicalRecord} medicalRecord 
+     * Retrieve all medical records
+     * @summary Get all medical records
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MedicalRecordsApiInterface
      */
-    createMedicalRecord(recordId: string, medicalRecord: MedicalRecord, options?: AxiosRequestConfig): AxiosPromise<void>;
-
-    /**
-     * Retrieve a specific medical record by its ID
-     * @summary Get a medical record by ID
-     * @param {string} recordId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MedicalRecordsApiInterface
-     */
-    getMedicalRecordById(recordId: string, options?: AxiosRequestConfig): AxiosPromise<MedicalRecord>;
+    getAllMedicalRecords(options?: AxiosRequestConfig): AxiosPromise<Array<MedicalRecord>>;
 
 }
 
@@ -742,28 +799,14 @@ export interface MedicalRecordsApiInterface {
  */
 export class MedicalRecordsApi extends BaseAPI implements MedicalRecordsApiInterface {
     /**
-     * Add a new medical record
-     * @summary Create a new medical record
-     * @param {string} recordId 
-     * @param {MedicalRecord} medicalRecord 
+     * Retrieve all medical records
+     * @summary Get all medical records
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MedicalRecordsApi
      */
-    public createMedicalRecord(recordId: string, medicalRecord: MedicalRecord, options?: AxiosRequestConfig) {
-        return MedicalRecordsApiFp(this.configuration).createMedicalRecord(recordId, medicalRecord, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve a specific medical record by its ID
-     * @summary Get a medical record by ID
-     * @param {string} recordId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MedicalRecordsApi
-     */
-    public getMedicalRecordById(recordId: string, options?: AxiosRequestConfig) {
-        return MedicalRecordsApiFp(this.configuration).getMedicalRecordById(recordId, options).then((request) => request(this.axios, this.basePath));
+    public getAllMedicalRecords(options?: AxiosRequestConfig) {
+        return MedicalRecordsApiFp(this.configuration).getAllMedicalRecords(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -777,18 +820,14 @@ export const VaccinationRecordsApiAxiosParamCreator = function (configuration?: 
         /**
          * Add a new vaccination record
          * @summary Create a new vaccination record
-         * @param {string} recordId 
          * @param {VaccinationRecord} vaccinationRecord 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createVaccinationRecord: async (recordId: string, vaccinationRecord: VaccinationRecord, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'recordId' is not null or undefined
-            assertParamExists('createVaccinationRecord', 'recordId', recordId)
+        createVaccinationRecord: async (vaccinationRecord: VaccinationRecord, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'vaccinationRecord' is not null or undefined
             assertParamExists('createVaccinationRecord', 'vaccinationRecord', vaccinationRecord)
-            const localVarPath = `/vaccination-records/{recordId}`
-                .replace(`{${"recordId"}}`, encodeURIComponent(String(recordId)));
+            const localVarPath = `/vaccination-records`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -815,17 +854,13 @@ export const VaccinationRecordsApiAxiosParamCreator = function (configuration?: 
             };
         },
         /**
-         * Retrieve a specific vaccination record by its ID
-         * @summary Get a vaccination record by ID
-         * @param {string} recordId 
+         * Retrieve all vaccination records
+         * @summary Get all vaccination records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVaccinationRecordById: async (recordId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'recordId' is not null or undefined
-            assertParamExists('getVaccinationRecordById', 'recordId', recordId)
-            const localVarPath = `/vaccination-records/{recordId}`
-                .replace(`{${"recordId"}}`, encodeURIComponent(String(recordId)));
+        getAllVaccinationRecords: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/vaccination-records`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -861,24 +896,22 @@ export const VaccinationRecordsApiFp = function(configuration?: Configuration) {
         /**
          * Add a new vaccination record
          * @summary Create a new vaccination record
-         * @param {string} recordId 
          * @param {VaccinationRecord} vaccinationRecord 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createVaccinationRecord(recordId: string, vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createVaccinationRecord(recordId, vaccinationRecord, options);
+        async createVaccinationRecord(vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createVaccinationRecord(vaccinationRecord, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Retrieve a specific vaccination record by its ID
-         * @summary Get a vaccination record by ID
-         * @param {string} recordId 
+         * Retrieve all vaccination records
+         * @summary Get all vaccination records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getVaccinationRecordById(recordId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<VaccinationRecord>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getVaccinationRecordById(recordId, options);
+        async getAllVaccinationRecords(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<VaccinationRecord>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllVaccinationRecords(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -894,23 +927,21 @@ export const VaccinationRecordsApiFactory = function (configuration?: Configurat
         /**
          * Add a new vaccination record
          * @summary Create a new vaccination record
-         * @param {string} recordId 
          * @param {VaccinationRecord} vaccinationRecord 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createVaccinationRecord(recordId: string, vaccinationRecord: VaccinationRecord, options?: any): AxiosPromise<void> {
-            return localVarFp.createVaccinationRecord(recordId, vaccinationRecord, options).then((request) => request(axios, basePath));
+        createVaccinationRecord(vaccinationRecord: VaccinationRecord, options?: any): AxiosPromise<void> {
+            return localVarFp.createVaccinationRecord(vaccinationRecord, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieve a specific vaccination record by its ID
-         * @summary Get a vaccination record by ID
-         * @param {string} recordId 
+         * Retrieve all vaccination records
+         * @summary Get all vaccination records
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getVaccinationRecordById(recordId: string, options?: any): AxiosPromise<VaccinationRecord> {
-            return localVarFp.getVaccinationRecordById(recordId, options).then((request) => request(axios, basePath));
+        getAllVaccinationRecords(options?: any): AxiosPromise<Array<VaccinationRecord>> {
+            return localVarFp.getAllVaccinationRecords(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -924,23 +955,21 @@ export interface VaccinationRecordsApiInterface {
     /**
      * Add a new vaccination record
      * @summary Create a new vaccination record
-     * @param {string} recordId 
      * @param {VaccinationRecord} vaccinationRecord 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VaccinationRecordsApiInterface
      */
-    createVaccinationRecord(recordId: string, vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig): AxiosPromise<void>;
+    createVaccinationRecord(vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig): AxiosPromise<void>;
 
     /**
-     * Retrieve a specific vaccination record by its ID
-     * @summary Get a vaccination record by ID
-     * @param {string} recordId 
+     * Retrieve all vaccination records
+     * @summary Get all vaccination records
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VaccinationRecordsApiInterface
      */
-    getVaccinationRecordById(recordId: string, options?: AxiosRequestConfig): AxiosPromise<VaccinationRecord>;
+    getAllVaccinationRecords(options?: AxiosRequestConfig): AxiosPromise<Array<VaccinationRecord>>;
 
 }
 
@@ -954,26 +983,24 @@ export class VaccinationRecordsApi extends BaseAPI implements VaccinationRecords
     /**
      * Add a new vaccination record
      * @summary Create a new vaccination record
-     * @param {string} recordId 
      * @param {VaccinationRecord} vaccinationRecord 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VaccinationRecordsApi
      */
-    public createVaccinationRecord(recordId: string, vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig) {
-        return VaccinationRecordsApiFp(this.configuration).createVaccinationRecord(recordId, vaccinationRecord, options).then((request) => request(this.axios, this.basePath));
+    public createVaccinationRecord(vaccinationRecord: VaccinationRecord, options?: AxiosRequestConfig) {
+        return VaccinationRecordsApiFp(this.configuration).createVaccinationRecord(vaccinationRecord, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
-     * Retrieve a specific vaccination record by its ID
-     * @summary Get a vaccination record by ID
-     * @param {string} recordId 
+     * Retrieve all vaccination records
+     * @summary Get all vaccination records
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof VaccinationRecordsApi
      */
-    public getVaccinationRecordById(recordId: string, options?: AxiosRequestConfig) {
-        return VaccinationRecordsApiFp(this.configuration).getVaccinationRecordById(recordId, options).then((request) => request(this.axios, this.basePath));
+    public getAllVaccinationRecords(options?: AxiosRequestConfig) {
+        return VaccinationRecordsApiFp(this.configuration).getAllVaccinationRecords(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

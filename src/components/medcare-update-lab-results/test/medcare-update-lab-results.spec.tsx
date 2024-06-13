@@ -2,12 +2,11 @@ import { newSpecPage } from '@stencil/core/testing';
 import { MedcareUpdateLabResults } from '../medcare-update-lab-results';
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { LabResult } from '../../../api/medcare-api';
 
 describe('medcare-update-lab-results', () => {
-  const sampleLabResults: LabResult[] = [
+  const sampleResults = [
     { id: '1', patientId: '123', testType: 'Blood Test', result: 'Normal' },
-    { id: '2', patientId: '124', testType: 'X-Ray', result: 'Clear' },
+    { id: '2', patientId: '124', testType: 'Urine Test', result: 'Abnormal' },
   ];
 
   let mock: MockAdapter;
@@ -20,8 +19,8 @@ describe('medcare-update-lab-results', () => {
     mock.reset();
   });
 
-  it('renders sample lab results', async () => {
-    mock.onGet('/api/lab-results/some-id').reply(200, sampleLabResults);
+  it('renders sample results', async () => {
+    mock.onGet('http://localhost:5005/api/lab-results').reply(200, sampleResults);
 
     const page = await newSpecPage({
       components: [MedcareUpdateLabResults],
@@ -31,13 +30,35 @@ describe('medcare-update-lab-results', () => {
     await page.rootInstance.fetchLabResults();
 
     const items = page.root.shadowRoot.querySelectorAll("li");
-    expect(items.length).toEqual(sampleLabResults.length);
-    expect(items[0].innerHTML).toContain('Blood Sugar');
-    expect(items[1].innerHTML).toContain('Cholesterol');
+    expect(items.length).toEqual(sampleResults.length);
+    expect(items[0].innerHTML).toContain('Blood Test');
+    expect(items[1].innerHTML).toContain('Urine Test');
+  });
+
+  it('updates lab result', async () => {
+    mock.onGet('http://localhost:5005/api/lab-results').reply(200, sampleResults);
+    mock.onPut('http://localhost:5005/api/lab-results/1').reply(200);
+
+    const page = await newSpecPage({
+      components: [MedcareUpdateLabResults],
+      html: `<medcare-update-lab-results api-base="http://localhost:5005/api"></medcare-update-lab-results>`,
+    });
+
+    await page.rootInstance.fetchLabResults();
+    const result = sampleResults[0];
+    result.result = 'Updated Result';
+
+    page.rootInstance.handleSubmit(new Event('submit'), result);
+    
+    await page.waitForChanges();
+
+    const items = page.root.shadowRoot.querySelectorAll("li");
+    expect(items.length).toEqual(sampleResults.length);
+    expect(items[0].innerHTML).toContain('Updated Result');
   });
 
   it('renders error message on network issues', async () => {
-    mock.onGet('/api/lab-results/some-id').networkError();
+    mock.onGet('http://localhost:5005/api/lab-results').networkError();
 
     const page = await newSpecPage({
       components: [MedcareUpdateLabResults],

@@ -14,15 +14,42 @@ export class MedcareUpdateLabResults {
 
   private async fetchLabResults() {
     try {
-      const response = await LabResultsApiFactory(undefined, this.apiBase, axios).getLabResultsById('some-id');
-      this.labResults = [response.data];
+      const response = await LabResultsApiFactory(undefined, this.apiBase, axios).getAllLabResults();
+      this.labResults = response.data;
     } catch (error) {
       console.error('Error fetching lab results:', error);
     }
   }
 
+  private async updateLabResult(resultId: string, updatedResult: LabResult) {
+    try {
+      await LabResultsApiFactory(undefined, this.apiBase, axios).updateLabResult(resultId, updatedResult);
+      await this.fetchLabResults();
+    } catch (error) {
+      console.error('Error updating lab result:', error);
+    }
+  }
+
   async componentWillLoad() {
     await this.fetchLabResults();
+  }
+
+  private handleInputChange(event: Event, result: LabResult) {
+    const target = event.target as HTMLInputElement;
+    const name = target.name;
+    const value = target.value;
+
+    this.labResults = this.labResults.map(r => {
+      if (r.id === result.id) {
+        return { ...r, [name]: value };
+      }
+      return r;
+    });
+  }
+
+  private handleSubmit(event: Event, result: LabResult) {
+    event.preventDefault();
+    this.updateLabResult(result.id, result);
   }
 
   render() {
@@ -34,7 +61,17 @@ export class MedcareUpdateLabResults {
             {this.labResults.map(result => (
               <li key={result.id}>
                 <h3>{result.testType}</h3>
-                <p>Result: {result.result}</p>
+                <form onSubmit={event => this.handleSubmit(event, result)}>
+                  <label>
+                    Test Type:
+                    <input name="testType" type="text" value={result.testType} onInput={event => this.handleInputChange(event, result)} />
+                  </label>
+                  <label>
+                    Result:
+                    <input name="result" type="text" value={result.result} onInput={event => this.handleInputChange(event, result)} />
+                  </label>
+                  <button type="submit">Submit</button>
+                </form>
               </li>
             ))}
           </ul>

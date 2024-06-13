@@ -14,8 +14,8 @@ export class MedcareMedicalRecords {
 
   private async fetchMedicalRecords() {
     try {
-      const response = await MedicalRecordsApiFactory(undefined, this.apiBase, axios).getMedicalRecordById('some-id');
-      this.medicalRecords = [response.data];
+      const response = await MedicalRecordsApiFactory(undefined, this.apiBase, axios).getAllMedicalRecords();
+      this.medicalRecords = response.data;
     } catch (error) {
       console.error('Error fetching medical records:', error);
     }
@@ -34,6 +34,7 @@ export class MedcareMedicalRecords {
             {this.medicalRecords.map(record => (
               <li key={record.id}>
                 <h3>{record.condition}</h3>
+                <p>Patient ID: {record.patientId}</p>
                 <p>Treatment: {record.treatment}</p>
                 <p>History: {record.history}</p>
               </li>

@@ -2,10 +2,9 @@ import { newSpecPage } from '@stencil/core/testing';
 import { MedcareMedicalRecords } from '../medcare-medical-records';
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { MedicalRecord } from '../../../api/medcare-api';
 
 describe('medcare-medical-records', () => {
-  const sampleRecords: MedicalRecord[] = [
+  const sampleRecords = [
     { id: '1', patientId: '123', condition: 'Diabetes', treatment: 'Insulin', history: 'Long-term' },
     { id: '2', patientId: '124', condition: 'Hypertension', treatment: 'Beta Blockers', history: 'Moderate' },
   ];
@@ -21,7 +20,7 @@ describe('medcare-medical-records', () => {
   });
 
   it('renders sample records', async () => {
-    mock.onGet('/api/medical-records/some-id').reply(200, sampleRecords);
+    mock.onGet('http://localhost:5005/api/medical-records').reply(200, sampleRecords);
 
     const page = await newSpecPage({
       components: [MedcareMedicalRecords],
@@ -37,7 +36,7 @@ describe('medcare-medical-records', () => {
   });
 
   it('renders error message on network issues', async () => {
-    mock.onGet('/api/medical-records/some-id').networkError();
+    mock.onGet('http://localhost:5005/api/medical-records').networkError();
 
     const page = await newSpecPage({
       components: [MedcareMedicalRecords],

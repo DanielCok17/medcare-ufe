@@ -22,68 +22,38 @@ tags:
     description: Allergy Records API
 
 paths:
-  /medical-records/{recordId}:
-    parameters:
-      - in: path
-        name: recordId
-        required: true
-        schema:
-          type: string
+  /medical-records:
     get:
       tags:
         - medicalRecords
-      summary: Get a medical record by ID
-      operationId: getMedicalRecordById
-      description: Retrieve a specific medical record by its ID
+      summary: Get all medical records
+      operationId: getAllMedicalRecords
+      description: Retrieve all medical records
       responses:
         "200":
-          description: Medical record details
+          description: List of medical records
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MedicalRecord"
-        "404":
-          description: Medical record not found
-    post:
-      tags:
-        - medicalRecords
-      summary: Create a new medical record
-      operationId: createMedicalRecord
-      description: Add a new medical record
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MedicalRecord"
-      responses:
-        "201":
-          description: Medical record created
-        "400":
-          description: Invalid input
-
-  /vaccination-records/{recordId}:
-    parameters:
-      - in: path
-        name: recordId
-        required: true
-        schema:
-          type: string
+                type: array
+                items:
+                  $ref: "#/components/schemas/MedicalRecord"
+  /vaccination-records:
     get:
       tags:
         - vaccinationRecords
-      summary: Get a vaccination record by ID
-      operationId: getVaccinationRecordById
-      description: Retrieve a specific vaccination record by its ID
+      summary: Get all vaccination records
+      operationId: getAllVaccinationRecords
+      description: Retrieve all vaccination records
       responses:
         "200":
-          description: Vaccination record details
+          description: List of vaccination records
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VaccinationRecord"
-        "404":
-          description: Vaccination record not found
+                type: array
+                items:
+                  $ref: "#/components/schemas/VaccinationRecord"
     post:
       tags:
         - vaccinationRecords
@@ -101,7 +71,22 @@ paths:
           description: Vaccination record created
         "400":
           description: Invalid input
-
+  /lab-results:
+    get:
+      tags:
+        - labResults
+      summary: Get all lab results
+      operationId: getAllLabResults
+      description: Retrieve all lab results
+      responses:
+        "200":
+          description: List of lab results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LabResult"
   /lab-results/{resultId}:
     parameters:
       - in: path
@@ -112,9 +97,9 @@ paths:
     get:
       tags:
         - labResults
-      summary: Get lab results by ID
-      operationId: getLabResultsById
-      description: Retrieve specific lab results by their ID
+      summary: Get lab result by ID
+      operationId: getLabResultById
+      description: Retrieve a specific lab result by its ID
       responses:
         "200":
           description: Lab result details
@@ -124,12 +109,12 @@ paths:
                 $ref: "#/components/schemas/LabResult"
         "404":
           description: Lab result not found
-    post:
+    put:
       tags:
         - labResults
-      summary: Create a new lab result
-      operationId: createLabResult
-      description: Add a new lab result
+      summary: Update a lab result
+      operationId: updateLabResult
+      description: Update a specific lab result by its ID
       requestBody:
         required: true
         content:
@@ -137,11 +122,28 @@ paths:
             schema:
               $ref: "#/components/schemas/LabResult"
       responses:
-        "201":
-          description: Lab result created
+        "200":
+          description: Lab result updated
         "400":
           description: Invalid input
-
+        "404":
+          description: Lab result not found
+  /allergy-records:
+    get:
+      tags:
+        - allergyRecords
+      summary: Get all allergy records
+      operationId: getAllAllergyRecords
+      description: Retrieve all allergy records
+      responses:
+        "200":
+          description: List of allergy records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AllergyRecord"
   /allergy-records/{recordId}:
     parameters:
       - in: path
