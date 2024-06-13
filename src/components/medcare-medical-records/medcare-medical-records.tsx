@@ -1,4 +1,6 @@
-import { Component, Host, Event, h, State , EventEmitter} from '@stencil/core';
+import { Component, Host, State, h, Prop } from '@stencil/core';
+import { MedicalRecordsApiFactory, MedicalRecord } from '../../api/medcare-api';
+import axios from 'axios';
 
 @Component({
   tag: 'medcare-medical-records',
@@ -6,21 +8,18 @@ import { Component, Host, Event, h, State , EventEmitter} from '@stencil/core';
   shadow: true,
 })
 export class MedcareMedicalRecords {
-  @State() medicalRecords: any[] = [];
+  @State() medicalRecords: MedicalRecord[] = [];
+  @Prop() apiBase: string;
+  @Prop() onNavigateHome: () => void;
 
   private async fetchMedicalRecords() {
-    // Replace with actual API call
-    this.medicalRecords = await Promise.resolve([
-      { id: 1, condition: 'Diabetes', treatment: 'Insulin', history: 'Long-term' },
-      { id: 2, condition: 'Hypertension', treatment: 'Beta Blockers', history: 'Moderate' },
-    ]);
+    try {
+      const response = await MedicalRecordsApiFactory(undefined, this.apiBase, axios).getMedicalRecordById('some-id');
+      this.medicalRecords = [response.data];
+    } catch (error) {
+      console.error('Error fetching medical records:', error);
+    }
   }
-
-  @Event() navigateHome: EventEmitter<void>;
-
-  private goBack = () => {
-    this.navigateHome.emit();
-  };
 
   async componentWillLoad() {
     await this.fetchMedicalRecords();
@@ -30,7 +29,7 @@ export class MedcareMedicalRecords {
     return (
       <Host>
         <div>
-          <h2>Specialized Medical Records</h2>
+          <h2>Medical Records</h2>
           <ul>
             {this.medicalRecords.map(record => (
               <li key={record.id}>
@@ -40,7 +39,7 @@ export class MedcareMedicalRecords {
               </li>
             ))}
           </ul>
-          <md-filled-button onClick={this.goBack}>
+          <md-filled-button onClick={this.onNavigateHome}>
             <md-icon slot="icon">arrow_back</md-icon>
             Back to Home
           </md-filled-button>

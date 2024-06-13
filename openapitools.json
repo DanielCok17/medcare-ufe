@@ -1,0 +1,18 @@
+{
+    "generator-cli": {
+        "useDocker": true,
+        "version": "6.6.0",
+        "generators": {
+            "medcare-api": {
+                "generatorName": "typescript-axios",
+                "inputSpec": "api/medcare-api.openapi.yaml",
+                "output": "#{cwd}/src/api/medcare-api",
+                "additionalProperties": {
+                    "supportsES6": "true",
+                    "withInterfaces": true,
+                    "enablePostProcessFile": true
+                }
+            }
+        }
+    }
+}

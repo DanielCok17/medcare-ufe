@@ -1,4 +1,6 @@
-import { Component, Host, h, State, Event, EventEmitter } from '@stencil/core';
+import { Component, Host, State, h, Prop } from '@stencil/core';
+import { LabResultsApiFactory, LabResult } from '../../api/medcare-api';
+import axios from 'axios';
 
 @Component({
   tag: 'medcare-update-lab-results',
@@ -6,56 +8,41 @@ import { Component, Host, h, State, Event, EventEmitter } from '@stencil/core';
   shadow: true,
 })
 export class MedcareUpdateLabResults {
-  @Event() navigateHome: EventEmitter<void>;
+  @State() labResults: LabResult[] = [];
+  @Prop() apiBase: string;
+  @Prop() onNavigateHome: () => void;
 
-  private goBack = () => {
-    this.navigateHome.emit();
-  };
-
-  @State() labResults = {
-    testName: '',
-    result: '',
-    date: '',
-    notes: '',
-  };
-
-  handleInputChange(event) {
-    const { name, value } = event.target;
-    this.labResults = { ...this.labResults, [name]: value };
+  private async fetchLabResults() {
+    try {
+      const response = await LabResultsApiFactory(undefined, this.apiBase, axios).getLabResultsById('some-id');
+      this.labResults = [response.data];
+    } catch (error) {
+      console.error('Error fetching lab results:', error);
+    }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    console.log('Lab Results:', this.labResults);
-    // TODO: Implement API call to update the lab results
+  async componentWillLoad() {
+    await this.fetchLabResults();
   }
 
   render() {
     return (
       <Host>
-        <form onSubmit={e => this.handleSubmit(e)}>
-          <label>
-            Test Name:
-            <input type="text" name="testName" value={this.labResults.testName} onInput={e => this.handleInputChange(e)} />
-          </label>
-          <label>
-            Result:
-            <input type="text" name="result" value={this.labResults.result} onInput={e => this.handleInputChange(e)} />
-          </label>
-          <label>
-            Date:
-            <input type="date" name="date" value={this.labResults.date} onInput={e => this.handleInputChange(e)} />
-          </label>
-          <label>
-            Notes:
-            <textarea name="notes" value={this.labResults.notes} onInput={e => this.handleInputChange(e)}></textarea>
-          </label>
-          <button type="submit">Submit</button>
-        </form>
-        <md-filled-button onClick={this.goBack}>
-          <md-icon slot="icon">arrow_back</md-icon>
-          Back to Home
-        </md-filled-button>
+        <div>
+          <h2>Lab Results</h2>
+          <ul>
+            {this.labResults.map(result => (
+              <li key={result.id}>
+                <h3>{result.testType}</h3>
+                <p>Result: {result.result}</p>
+              </li>
+            ))}
+          </ul>
+          <md-filled-button onClick={this.onNavigateHome}>
+            <md-icon slot="icon">arrow_back</md-icon>
+            Back to Home
+          </md-filled-button>
+        </div>
       </Host>
     );
   }

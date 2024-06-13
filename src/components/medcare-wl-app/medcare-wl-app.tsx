@@ -1,10 +1,4 @@
-import { Component, Host, State, h } from '@stencil/core';
-
-declare global {
-  interface Window {
-    navigation: any;
-  }
-}
+import { Component, Host, State, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'medcare-wl-app',
@@ -13,6 +7,8 @@ declare global {
 })
 export class MedcareWlApp {
   @State() private relativePath = '';
+  @Prop() apiBase: string;
+  @Prop() basePath: string;
 
   componentWillLoad() {
     const baseUri = new URL('/', document.baseURI || '/').pathname;
@@ -45,16 +41,16 @@ export class MedcareWlApp {
 
     switch (this.relativePath) {
       case 'medical-records':
-        componentToRender = <medcare-medical-records onNavigateHome={this.navigateToHome} />;
+        componentToRender = <medcare-medical-records  onNavigateHome={this.navigateToHome} apiBase={this.apiBase} />;
         break;
       case 'vaccination-record':
-        componentToRender = <medcare-vaccination-record onNavigateHome={this.navigateToHome} />;
+        componentToRender = <medcare-vaccination-record  onNavigateHome={this.navigateToHome} apiBase={this.apiBase} />;
         break;
       case 'update-lab-results':
-        componentToRender = <medcare-update-lab-results onNavigateHome={this.navigateToHome} />;
+        componentToRender = <medcare-update-lab-results  onNavigateHome={this.navigateToHome} apiBase={this.apiBase} />;
         break;
       case 'remove-allergy-records':
-        componentToRender = <medcare-remove-allergy-records onNavigateHome={this.navigateToHome} />;
+        componentToRender = <medcare-remove-allergy-records  onNavigateHome={this.navigateToHome} apiBase={this.apiBase} />;
         break;
       default:
         componentToRender = (

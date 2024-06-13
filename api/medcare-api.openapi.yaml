@@ -1,0 +1,253 @@
+openapi: 3.0.0
+servers:
+  - description: Cluster Endpoint
+    url: /api
+info:
+  description: MedCare system API
+  version: "1.0.0"
+  title: MedCare API
+  contact:
+    email: <your_email>
+  license:
+    name: CC BY 4.0
+    url: "https://creativecommons.org/licenses/by/4.0/"
+tags:
+  - name: medicalRecords
+    description: Medical Records API
+  - name: vaccinationRecords
+    description: Vaccination Records API
+  - name: labResults
+    description: Lab Results API
+  - name: allergyRecords
+    description: Allergy Records API
+
+paths:
+  /medical-records/{recordId}:
+    parameters:
+      - in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - medicalRecords
+      summary: Get a medical record by ID
+      operationId: getMedicalRecordById
+      description: Retrieve a specific medical record by its ID
+      responses:
+        "200":
+          description: Medical record details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MedicalRecord"
+        "404":
+          description: Medical record not found
+    post:
+      tags:
+        - medicalRecords
+      summary: Create a new medical record
+      operationId: createMedicalRecord
+      description: Add a new medical record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicalRecord"
+      responses:
+        "201":
+          description: Medical record created
+        "400":
+          description: Invalid input
+
+  /vaccination-records/{recordId}:
+    parameters:
+      - in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - vaccinationRecords
+      summary: Get a vaccination record by ID
+      operationId: getVaccinationRecordById
+      description: Retrieve a specific vaccination record by its ID
+      responses:
+        "200":
+          description: Vaccination record details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaccinationRecord"
+        "404":
+          description: Vaccination record not found
+    post:
+      tags:
+        - vaccinationRecords
+      summary: Create a new vaccination record
+      operationId: createVaccinationRecord
+      description: Add a new vaccination record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VaccinationRecord"
+      responses:
+        "201":
+          description: Vaccination record created
+        "400":
+          description: Invalid input
+
+  /lab-results/{resultId}:
+    parameters:
+      - in: path
+        name: resultId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - labResults
+      summary: Get lab results by ID
+      operationId: getLabResultsById
+      description: Retrieve specific lab results by their ID
+      responses:
+        "200":
+          description: Lab result details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LabResult"
+        "404":
+          description: Lab result not found
+    post:
+      tags:
+        - labResults
+      summary: Create a new lab result
+      operationId: createLabResult
+      description: Add a new lab result
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LabResult"
+      responses:
+        "201":
+          description: Lab result created
+        "400":
+          description: Invalid input
+
+  /allergy-records/{recordId}:
+    parameters:
+      - in: path
+        name: recordId
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - allergyRecords
+      summary: Get an allergy record by ID
+      operationId: getAllergyRecordById
+      description: Retrieve a specific allergy record by its ID
+      responses:
+        "200":
+          description: Allergy record details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllergyRecord"
+        "404":
+          description: Allergy record not found
+    delete:
+      tags:
+        - allergyRecords
+      summary: Delete an allergy record
+      operationId: deleteAllergyRecord
+      description: Remove a specific allergy record by its ID
+      responses:
+        "204":
+          description: Allergy record deleted
+        "404":
+          description: Allergy record not found
+
+components:
+  schemas:
+    MedicalRecord:
+      type: object
+      required: [id, patientId, condition, treatment]
+      properties:
+        id:
+          type: string
+          example: x321ab3
+          description: Unique id of the medical record
+        patientId:
+          type: string
+          example: 460527-jozef-pucik
+          description: Unique identifier of the patient
+        condition:
+          type: string
+          example: Diabetes
+        treatment:
+          type: string
+          example: Insulin
+        history:
+          type: string
+          example: Long-term
+    VaccinationRecord:
+      type: object
+      required: [id, patientId, vaccine, date]
+      properties:
+        id:
+          type: string
+          example: v123ab3
+          description: Unique id of the vaccination record
+        patientId:
+          type: string
+          example: 460527-jozef-pucik
+          description: Unique identifier of the patient
+        vaccine:
+          type: string
+          example: COVID-19
+        date:
+          type: string
+          format: date
+          example: "2024-01-15"
+    LabResult:
+      type: object
+      required: [id, patientId, testType, result]
+      properties:
+        id:
+          type: string
+          example: l456ab3
+          description: Unique id of the lab result
+        patientId:
+          type: string
+          example: 460527-jozef-pucik
+          description: Unique identifier of the patient
+        testType:
+          type: string
+          example: Blood Test
+        result:
+          type: string
+          example: Normal
+    AllergyRecord:
+      type: object
+      required: [id, patientId, allergen]
+      properties:
+        id:
+          type: string
+          example: a789ab3
+          description: Unique id of the allergy record
+        patientId:
+          type: string
+          example: 460527-jozef-pucik
+          description: Unique identifier of the patient
+        allergen:
+          type: string
+          example: Peanuts

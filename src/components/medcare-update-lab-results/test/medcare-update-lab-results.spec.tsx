@@ -1,42 +1,53 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MedcareUpdateLabResults } from '../medcare-update-lab-results';
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
+import { LabResult } from '../../../api/medcare-api';
 
 describe('medcare-update-lab-results', () => {
-  it('renders', async () => {
+  const sampleLabResults: LabResult[] = [
+    { id: '1', patientId: '123', testType: 'Blood Test', result: 'Normal' },
+    { id: '2', patientId: '124', testType: 'X-Ray', result: 'Clear' },
+  ];
+
+  let mock: MockAdapter;
+
+  beforeAll(() => {
+    mock = new MockAdapter(axios);
+  });
+
+  afterEach(() => {
+    mock.reset();
+  });
+
+  it('renders sample lab results', async () => {
+    mock.onGet('/api/lab-results/some-id').reply(200, sampleLabResults);
+
     const page = await newSpecPage({
       components: [MedcareUpdateLabResults],
-      html: `<medcare-update-lab-results></medcare-update-lab-results>`,
+      html: `<medcare-update-lab-results api-base="http://localhost:5005/api"></medcare-update-lab-results>`,
     });
-    expect(page.root).toEqualHtml(`
-      <medcare-update-lab-results>
-        <mock:shadow-root>
-          <form>
-            <label>
-              Test Name:
-              <input type="text" name="testName" value="">
-            </label>
-            <label>
-              Result:
-              <input type="text" name="result" value="">
-            </label>
-            <label>
-              Date:
-              <input type="date" name="date" value="">
-            </label>
-            <label>
-              Notes:
-              <textarea name="notes" value=""></textarea>
-            </label>
-            <button type="submit">Submit</button>
-          </form>
-          <md-filled-button>
-          <md-icon slot="icon">
-            arrow_back
-          </md-icon>
-          Back to Home
-        </md-filled-button>
-        </mock:shadow-root>
-      </medcare-update-lab-results>
-    `);
+
+    await page.rootInstance.fetchLabResults();
+
+    const items = page.root.shadowRoot.querySelectorAll("li");
+    expect(items.length).toEqual(sampleLabResults.length);
+    expect(items[0].innerHTML).toContain('Blood Sugar');
+    expect(items[1].innerHTML).toContain('Cholesterol');
+  });
+
+  it('renders error message on network issues', async () => {
+    mock.onGet('/api/lab-results/some-id').networkError();
+
+    const page = await newSpecPage({
+      components: [MedcareUpdateLabResults],
+      html: `<medcare-update-lab-results api-base="http://localhost:5005/api"></medcare-update-lab-results>`,
+    });
+
+    await page.rootInstance.fetchLabResults();
+
+    const errorMessage = page.root.shadowRoot.querySelector(".error");
+    expect(errorMessage).not.toBeNull();
+    expect(page.root.shadowRoot.querySelectorAll("li").length).toEqual(0);
   });
 });
