@@ -3,17 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.googleapis.com https://themes.googleusercontent.com;">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <title>MedCare</title>
-
+    <base href="/" />
     <script type="module" src="/build/medcare-ufe.esm.js"></script>
     <script nomodule src="/build/medcare-ufe.js"></script>
   </head>
   <body style="font-family: 'Roboto'">
-    <medcare-medical-records></medcare-medical-records>
-    <medcare-vaccination-record></medcare-vaccination-record>
-    <medcare-update-lab-results></medcare-update-lab-results>
-    <medcare-remove-allergy-records></medcare-remove-allergy-records>
+    <medcare-wl-app base-path="/medcare/"></medcare-wl-app>
   </body>
 </html>

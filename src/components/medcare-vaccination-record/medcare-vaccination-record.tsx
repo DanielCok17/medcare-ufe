@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Host, h, State, Event, EventEmitter } from '@stencil/core';
 
 @Component({
   tag: 'medcare-vaccination-record',
@@ -6,6 +6,12 @@ import { Component, Host, h, State } from '@stencil/core';
   shadow: true,
 })
 export class MedcareVaccinationRecord {
+
+  @Event() navigateHome: EventEmitter<void>;
+
+  private goBack = () => {
+    this.navigateHome.emit();
+  };
 
   @State() vaccinationData = {
     date: '',
@@ -57,6 +63,10 @@ export class MedcareVaccinationRecord {
           </label>
           <button type="submit">Submit</button>
         </form>
+        <md-filled-button onClick={this.goBack}>
+          <md-icon slot="icon">arrow_back</md-icon>
+          Back to Home
+        </md-filled-button>
       </Host>
     );
   }

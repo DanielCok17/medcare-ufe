@@ -24,6 +24,12 @@ describe('medcare-medical-records', () => {
                 <p>History: Moderate</p>
               </li>
             </ul>
+            <md-filled-button>
+            <md-icon slot="icon">
+              arrow_back
+            </md-icon>
+            Back to Home
+          </md-filled-button>
           </div>
         </mock:shadow-root>
       </medcare-medical-records>

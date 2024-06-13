@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Host, Event, h, State , EventEmitter} from '@stencil/core';
 
 @Component({
   tag: 'medcare-medical-records',
@@ -15,6 +15,12 @@ export class MedcareMedicalRecords {
       { id: 2, condition: 'Hypertension', treatment: 'Beta Blockers', history: 'Moderate' },
     ]);
   }
+
+  @Event() navigateHome: EventEmitter<void>;
+
+  private goBack = () => {
+    this.navigateHome.emit();
+  };
 
   async componentWillLoad() {
     await this.fetchMedicalRecords();
@@ -34,6 +40,10 @@ export class MedcareMedicalRecords {
               </li>
             ))}
           </ul>
+          <md-filled-button onClick={this.goBack}>
+            <md-icon slot="icon">arrow_back</md-icon>
+            Back to Home
+          </md-filled-button>
         </div>
       </Host>
     );

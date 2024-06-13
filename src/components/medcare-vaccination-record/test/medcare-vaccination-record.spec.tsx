@@ -37,6 +37,12 @@ describe('medcare-vaccination-record', () => {
             </label>
             <button type="submit">Submit</button>
           </form>
+          <md-filled-button>
+          <md-icon slot="icon">
+            arrow_back
+          </md-icon>
+          Back to Home
+        </md-filled-button>
         </mock:shadow-root>
       </medcare-vaccination-record>
     `);

@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Host, h, State, Event, EventEmitter} from '@stencil/core';
 
 @Component({
   tag: 'medcare-remove-allergy-records',
@@ -6,6 +6,13 @@ import { Component, Host, h, State } from '@stencil/core';
   shadow: true,
 })
 export class MedcareRemoveAllergyRecords {
+
+  @Event() navigateHome: EventEmitter<void>;
+
+  private goBack = () => {
+    this.navigateHome.emit();
+  };
+
 
   @State() allergyId: string = '';
 
@@ -30,6 +37,10 @@ export class MedcareRemoveAllergyRecords {
           </label>
           <button type="submit">Remove</button>
         </form>
+        <md-filled-button onClick={this.goBack}>
+          <md-icon slot="icon">arrow_back</md-icon>
+          Back to Home
+        </md-filled-button>
       </Host>
     );
   }
