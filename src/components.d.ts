@@ -6,6 +6,10 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface MedcareHomescreen {
+        "apiBase": string;
+        "basePath": string;
+    }
     interface MedcareMedicalRecords {
         "apiBase": string;
         "onNavigateHome": () => void;
@@ -35,6 +39,12 @@ export interface MedcareRecordEditorCustomEvent<T> extends CustomEvent<T> {
     target: HTMLMedcareRecordEditorElement;
 }
 declare global {
+    interface HTMLMedcareHomescreenElement extends Components.MedcareHomescreen, HTMLStencilElement {
+    }
+    var HTMLMedcareHomescreenElement: {
+        prototype: HTMLMedcareHomescreenElement;
+        new (): HTMLMedcareHomescreenElement;
+    };
     interface HTMLMedcareMedicalRecordsElement extends Components.MedcareMedicalRecords, HTMLStencilElement {
     }
     var HTMLMedcareMedicalRecordsElement: {
@@ -83,6 +93,7 @@ declare global {
         new (): HTMLMedcareWlAppElement;
     };
     interface HTMLElementTagNameMap {
+        "medcare-homescreen": HTMLMedcareHomescreenElement;
         "medcare-medical-records": HTMLMedcareMedicalRecordsElement;
         "medcare-record-editor": HTMLMedcareRecordEditorElement;
         "medcare-remove-allergy-records": HTMLMedcareRemoveAllergyRecordsElement;
@@ -92,6 +103,10 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    interface MedcareHomescreen {
+        "apiBase"?: string;
+        "basePath"?: string;
+    }
     interface MedcareMedicalRecords {
         "apiBase"?: string;
         "onNavigateHome"?: () => void;
@@ -117,6 +132,7 @@ declare namespace LocalJSX {
         "basePath"?: string;
     }
     interface IntrinsicElements {
+        "medcare-homescreen": MedcareHomescreen;
         "medcare-medical-records": MedcareMedicalRecords;
         "medcare-record-editor": MedcareRecordEditor;
         "medcare-remove-allergy-records": MedcareRemoveAllergyRecords;
@@ -129,6 +145,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "medcare-homescreen": LocalJSX.MedcareHomescreen & JSXBase.HTMLAttributes<HTMLMedcareHomescreenElement>;
             "medcare-medical-records": LocalJSX.MedcareMedicalRecords & JSXBase.HTMLAttributes<HTMLMedcareMedicalRecordsElement>;
             "medcare-record-editor": LocalJSX.MedcareRecordEditor & JSXBase.HTMLAttributes<HTMLMedcareRecordEditorElement>;
             "medcare-remove-allergy-records": LocalJSX.MedcareRemoveAllergyRecords & JSXBase.HTMLAttributes<HTMLMedcareRemoveAllergyRecordsElement>;

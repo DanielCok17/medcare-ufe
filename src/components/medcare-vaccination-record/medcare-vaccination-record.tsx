@@ -72,7 +72,7 @@ export class MedcareVaccinationRecord {
           </label>
           <button type="submit">Create Record</button>
         </form>
-        <button onClick={this.onNavigateHome}>Back to Home</button>
+        {/* <button onClick={this.onNavigateHome}>Back to Home</button> */}
       </div>
     );
   }

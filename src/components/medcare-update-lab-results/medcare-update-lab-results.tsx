@@ -75,10 +75,10 @@ export class MedcareUpdateLabResults {
               </li>
             ))}
           </ul>
-          <md-filled-button onClick={this.onNavigateHome}>
+          {/* <md-filled-button onClick={this.onNavigateHome}>
             <md-icon slot="icon">arrow_back</md-icon>
             Back to Home
-          </md-filled-button>
+          </md-filled-button> */}
         </div>
       </Host>
     );
