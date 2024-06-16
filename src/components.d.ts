@@ -14,9 +14,6 @@ export namespace Components {
         "apiBase": string;
         "onNavigateHome": () => void;
     }
-    interface MedcareRecordEditor {
-        "entryId": string;
-    }
     interface MedcareRemoveAllergyRecords {
         "apiBase": string;
         "onNavigateHome": () => void;
@@ -29,14 +26,6 @@ export namespace Components {
         "apiBase": string;
         "onNavigateHome": () => void;
     }
-    interface MedcareWlApp {
-        "apiBase": string;
-        "basePath": string;
-    }
-}
-export interface MedcareRecordEditorCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLMedcareRecordEditorElement;
 }
 declare global {
     interface HTMLMedcareHomescreenElement extends Components.MedcareHomescreen, HTMLStencilElement {
@@ -50,23 +39,6 @@ declare global {
     var HTMLMedcareMedicalRecordsElement: {
         prototype: HTMLMedcareMedicalRecordsElement;
         new (): HTMLMedcareMedicalRecordsElement;
-    };
-    interface HTMLMedcareRecordEditorElementEventMap {
-        "editor-closed": string;
-    }
-    interface HTMLMedcareRecordEditorElement extends Components.MedcareRecordEditor, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLMedcareRecordEditorElementEventMap>(type: K, listener: (this: HTMLMedcareRecordEditorElement, ev: MedcareRecordEditorCustomEvent<HTMLMedcareRecordEditorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLMedcareRecordEditorElementEventMap>(type: K, listener: (this: HTMLMedcareRecordEditorElement, ev: MedcareRecordEditorCustomEvent<HTMLMedcareRecordEditorElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLMedcareRecordEditorElement: {
-        prototype: HTMLMedcareRecordEditorElement;
-        new (): HTMLMedcareRecordEditorElement;
     };
     interface HTMLMedcareRemoveAllergyRecordsElement extends Components.MedcareRemoveAllergyRecords, HTMLStencilElement {
     }
@@ -86,20 +58,12 @@ declare global {
         prototype: HTMLMedcareVaccinationRecordElement;
         new (): HTMLMedcareVaccinationRecordElement;
     };
-    interface HTMLMedcareWlAppElement extends Components.MedcareWlApp, HTMLStencilElement {
-    }
-    var HTMLMedcareWlAppElement: {
-        prototype: HTMLMedcareWlAppElement;
-        new (): HTMLMedcareWlAppElement;
-    };
     interface HTMLElementTagNameMap {
         "medcare-homescreen": HTMLMedcareHomescreenElement;
         "medcare-medical-records": HTMLMedcareMedicalRecordsElement;
-        "medcare-record-editor": HTMLMedcareRecordEditorElement;
         "medcare-remove-allergy-records": HTMLMedcareRemoveAllergyRecordsElement;
         "medcare-update-lab-results": HTMLMedcareUpdateLabResultsElement;
         "medcare-vaccination-record": HTMLMedcareVaccinationRecordElement;
-        "medcare-wl-app": HTMLMedcareWlAppElement;
     }
 }
 declare namespace LocalJSX {
@@ -110,10 +74,6 @@ declare namespace LocalJSX {
     interface MedcareMedicalRecords {
         "apiBase"?: string;
         "onNavigateHome"?: () => void;
-    }
-    interface MedcareRecordEditor {
-        "entryId"?: string;
-        "onEditor-closed"?: (event: MedcareRecordEditorCustomEvent<string>) => void;
     }
     interface MedcareRemoveAllergyRecords {
         "apiBase"?: string;
@@ -127,18 +87,12 @@ declare namespace LocalJSX {
         "apiBase"?: string;
         "onNavigateHome"?: () => void;
     }
-    interface MedcareWlApp {
-        "apiBase"?: string;
-        "basePath"?: string;
-    }
     interface IntrinsicElements {
         "medcare-homescreen": MedcareHomescreen;
         "medcare-medical-records": MedcareMedicalRecords;
-        "medcare-record-editor": MedcareRecordEditor;
         "medcare-remove-allergy-records": MedcareRemoveAllergyRecords;
         "medcare-update-lab-results": MedcareUpdateLabResults;
         "medcare-vaccination-record": MedcareVaccinationRecord;
-        "medcare-wl-app": MedcareWlApp;
     }
 }
 export { LocalJSX as JSX };
@@ -147,11 +101,9 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "medcare-homescreen": LocalJSX.MedcareHomescreen & JSXBase.HTMLAttributes<HTMLMedcareHomescreenElement>;
             "medcare-medical-records": LocalJSX.MedcareMedicalRecords & JSXBase.HTMLAttributes<HTMLMedcareMedicalRecordsElement>;
-            "medcare-record-editor": LocalJSX.MedcareRecordEditor & JSXBase.HTMLAttributes<HTMLMedcareRecordEditorElement>;
             "medcare-remove-allergy-records": LocalJSX.MedcareRemoveAllergyRecords & JSXBase.HTMLAttributes<HTMLMedcareRemoveAllergyRecordsElement>;
             "medcare-update-lab-results": LocalJSX.MedcareUpdateLabResults & JSXBase.HTMLAttributes<HTMLMedcareUpdateLabResultsElement>;
             "medcare-vaccination-record": LocalJSX.MedcareVaccinationRecord & JSXBase.HTMLAttributes<HTMLMedcareVaccinationRecordElement>;
-            "medcare-wl-app": LocalJSX.MedcareWlApp & JSXBase.HTMLAttributes<HTMLMedcareWlAppElement>;
         }
     }
 }

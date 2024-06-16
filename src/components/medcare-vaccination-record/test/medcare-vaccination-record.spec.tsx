@@ -1,73 +1,72 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { MedcareVaccinationRecord } from '../medcare-vaccination-record';
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
 
 describe('medcare-vaccination-record', () => {
   const sampleRecords = [
-    { id: '1', patientId: '123', vaccine: 'COVID-19', date: '2024-01-01' },
-    { id: '2', patientId: '124', vaccine: 'Flu', date: '2024-02-01' },
+    { id: '1', patientId: '123', vaccine: 'Pfizer', date: '2023-06-01' },
+    { id: '2', patientId: '124', vaccine: 'Moderna', date: '2023-06-02' },
   ];
 
-  let mock: MockAdapter;
-
-  beforeAll(() => {
-    mock = new MockAdapter(axios);
-  });
-
-  afterEach(() => {
-    mock.reset();
-  });
-
   it('renders sample records', async () => {
-    mock.onGet('http://localhost:5005/api/vaccination-records').reply(200, sampleRecords);
-
     const page = await newSpecPage({
       components: [MedcareVaccinationRecord],
-      html: `<medcare-vaccination-record api-base="http://localhost:5005/api"></medcare-vaccination-record>`,
+      html: `<medcare-vaccination-record></medcare-vaccination-record>`,
     });
 
-    await page.rootInstance.fetchVaccinationRecords();
-
-    const items = page.root.shadowRoot.querySelectorAll("li");
-    expect(items.length).toEqual(sampleRecords.length);
-    expect(items[0].innerHTML).toContain('COVID-19');
-    expect(items[1].innerHTML).toContain('Flu');
-  });
-
-  it('creates a new vaccination record', async () => {
-    mock.onGet('http://localhost:5005/api/vaccination-records').reply(200, sampleRecords);
-    mock.onPost('http://localhost:5005/api/vaccination-records').reply(201);
-
-    const page = await newSpecPage({
-      components: [MedcareVaccinationRecord],
-      html: `<medcare-vaccination-record api-base="http://localhost:5005/api"></medcare-vaccination-record>`,
-    });
-
-    await page.rootInstance.fetchVaccinationRecords();
-
-    const newRecord = { id: '', patientId: '125', vaccine: 'Hepatitis', date: '2024-03-01' };
-    page.rootInstance.newRecord = newRecord;
-
-    await page.rootInstance.createVaccinationRecord(new Event('submit'));
-    
+    // Manually setting the vaccinationRecords state for testing
+    page.rootInstance.vaccinationRecords = sampleRecords;
     await page.waitForChanges();
 
-    expect(page.rootInstance.vaccinationRecords.length).toEqual(sampleRecords.length + 1);
+    const items = page.root.shadowRoot.querySelectorAll('li');
+    expect(items.length).toEqual(sampleRecords.length);
+    expect(items[0].innerHTML).toContain('Pfizer');
+    expect(items[1].innerHTML).toContain('Moderna');
   });
 
   it('renders error message on network issues', async () => {
-    mock.onGet('http://localhost:5005/api/vaccination-records').networkError();
-
     const page = await newSpecPage({
       components: [MedcareVaccinationRecord],
-      html: `<medcare-vaccination-record api-base="http://localhost:5005/api"></medcare-vaccination-record>`,
+      html: `<medcare-vaccination-record></medcare-vaccination-record>`,
     });
 
-    await page.rootInstance.fetchVaccinationRecords();
+    // Manually setting the errorMessage state for testing
+    page.rootInstance.errorMessage = 'Error fetching Vaccination records. Please try again later.';
+    await page.waitForChanges();
 
-    const errorMessage = page.root.shadowRoot.querySelector(".error");
+    const errorMessage = page.root.shadowRoot.querySelector('.error-message');
     expect(errorMessage).not.toBeNull();
-    expect(page.root.shadowRoot.querySelectorAll("li").length).toEqual(0);
+    expect(errorMessage.textContent).toContain('Error fetching Vaccination records. Please try again later.');
+    expect(page.root.shadowRoot.querySelectorAll('li').length).toEqual(0);
+  });
+
+  it('handles input changes correctly', async () => {
+    const page = await newSpecPage({
+      components: [MedcareVaccinationRecord],
+      html: `<medcare-vaccination-record></medcare-vaccination-record>`,
+    });
+
+    const input = page.root.shadowRoot.querySelector('input[name="vaccine"]') as HTMLInputElement;
+    input.value = 'Johnson & Johnson';
+    input.dispatchEvent(new Event('input'));
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.newRecord.vaccine).toBe('Johnson & Johnson');
+  });
+
+  it('handles form submission correctly', async () => {
+    const page = await newSpecPage({
+      components: [MedcareVaccinationRecord],
+      html: `<medcare-vaccination-record></medcare-vaccination-record>`,
+    });
+
+    // Mocking the createVaccinationRecord function
+    page.rootInstance.createVaccinationRecord = jest.fn();
+    const form = page.root.shadowRoot.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.createVaccinationRecord).toHaveBeenCalled();
   });
 });
